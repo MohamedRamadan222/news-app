@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/shared/cubit/states.dart';
+import 'package:untitled/shared/network/local/cach_helper.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitialState());
@@ -8,10 +9,13 @@ class AppCubit extends Cubit<AppState> {
 
   bool isDark = false;
 
-  void changeAppMode()
-  {
-    isDark = !isDark;
-    emit(AppChangeBottomSheetState());
+  void changeAppMode({required bool fromShared}) {
+    if (fromShared != null)
+      isDark = fromShared;
+    else
+      isDark = !isDark;
+    CacheHelper.putBoolean(key: 'isDark', value: isDark).then((value) {
+      emit(AppChangeBottomSheetState());
+    });
   }
-
 }
