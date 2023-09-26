@@ -10,12 +10,15 @@ class AppCubit extends Cubit<AppState> {
   bool isDark = false;
 
   void changeAppMode({required bool fromShared}) {
-    if (fromShared != null)
+    if (!fromShared) {
       isDark = fromShared;
-    else
-      isDark = !isDark;
-    CacheHelper.putBoolean(key: 'isDark', value: isDark).then((value) {
       emit(AppChangeBottomSheetState());
+    } else {
+      isDark = !isDark;
+      CacheHelper.putBoolean(key: 'isDark', value: isDark).then((value) {
+        emit(AppChangeBottomSheetState());
     });
+
+    }
   }
 }

@@ -14,15 +14,15 @@ class NewsCubit extends Cubit<NewsStates> {
 
   int currentIndex = 0;
   List<BottomNavigationBarItem> bottomItems = [
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
       icon: Icon(Icons.business),
       label: 'Business',
     ),
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
       icon: Icon(Icons.sports),
       label: 'Sports',
     ),
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
       icon: Icon(Icons.science),
       label: 'science',
     ),
@@ -32,9 +32,9 @@ class NewsCubit extends Cubit<NewsStates> {
     // ),
   ];
   List<Widget> screen = [
-    BusinessScreen(),
+    const BusinessScreen(),
     SportsScreen(),
-    ScienceScreen(),
+    const ScienceScreen(),
     // SettingsScreen(),
   ];
 
@@ -107,4 +107,22 @@ class NewsCubit extends Cubit<NewsStates> {
     }
   }
 
+  List<dynamic> search = [];
+
+  void getSearch(String value) {
+    emit(NewsGetSearchLoadingState());
+    // search =[];
+    DioHelper.getData(
+        url: 'https://wsq-api.fonoq.com/api/v1/articles',
+        query: {'search': '$value'})
+        .then((value) => {
+      // print(value.data.toString()),
+      search = value.data['data'],
+      print(search[0]),
+      emit(NewGetSearchSuccessState())
+    })
+        .catchError((error) {
+      emit(NewGetSearchErrorState(error.toString()));
+    });
+  }
 }

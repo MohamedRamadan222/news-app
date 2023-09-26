@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:untitled/layout/news_app/cubit/cubit.dart';
 
 // import 'package:untitled/layout/cubit/cubit.dart';
 import 'package:untitled/layout/news_app/news_layout.dart';
@@ -18,8 +19,8 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
   await CacheHelper.init();
-  bool? isDark = CacheHelper.getBoolean(key: 'isDark');
-  runApp(MyApp(isDark!));
+  bool isDark = CacheHelper.getBoolean(key: 'isDark') ?? true;
+  runApp(MyApp(isDark));
 }
 
 class MyApp extends StatelessWidget {
@@ -38,9 +39,19 @@ class MyApp extends StatelessWidget {
     const backgroundButtomBarDark = '0E0E0F';
     const primaryDark = 'F5BA43';
 
-    return BlocProvider(
-      create: (BuildContext context) =>
-          AppCubit()..changeAppMode(fromShared: isDark),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NewsCubit()
+            ..getBusiness()
+            ..getSports()
+            ..getScience(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              AppCubit()..changeAppMode(fromShared: isDark),
+        ),
+      ],
       child: BlocConsumer<AppCubit, AppState>(
         listener: (context, state) {},
         builder: (context, state) {
