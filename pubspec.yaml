@@ -48,6 +48,7 @@ dependencies:
   hexcolor: ^3.0.1
   google_fonts: ^4.0.4
   shared_preferences: ^2.2.1
+  webview_flutter: ^4.4.1
 
 
 

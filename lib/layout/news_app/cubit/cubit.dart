@@ -4,13 +4,13 @@ import 'package:untitled/layout/news_app/cubit/states.dart';
 import 'package:untitled/modules/business/business_screen.dart';
 import 'package:untitled/modules/science/science_screen.dart';
 import 'package:untitled/modules/sports/sports_screen.dart';
+
 import '../../../shared/network/remote/dio_helper.dart';
 
 class NewsCubit extends Cubit<NewsStates> {
   NewsCubit() : super(NewsInitialState());
 
   static NewsCubit get(context) => BlocProvider.of(context);
-
 
   int currentIndex = 0;
   List<BottomNavigationBarItem> bottomItems = [
@@ -89,7 +89,7 @@ class NewsCubit extends Cubit<NewsStates> {
 
   void getScience() {
     emit(NewsGetScienceLoadingState());
-    if (science.length == 0) {
+    if (science.isEmpty) {
       DioHelper.getData(
               url: 'https://wsq-api.fonoq.com/api/v1/articles',
               query: {'search': ''})
@@ -113,14 +113,12 @@ class NewsCubit extends Cubit<NewsStates> {
     emit(NewsGetSearchLoadingState());
     // search =[];
     DioHelper.getData(
-        url: 'https://wsq-api.fonoq.com/api/v1/articles',
-        query: {'search': '$value'})
+            url: 'https://wsq-api.fonoq.com/api/v1/articles',
+            query: {'search': value})
         .then((value) => {
-      // print(value.data.toString()),
-      search = value.data['data'],
-      print(search[0]),
-      emit(NewGetSearchSuccessState())
-    })
+              search = value.data['data'],
+              emit(NewGetSearchSuccessState())
+            })
         .catchError((error) {
       emit(NewGetSearchErrorState(error.toString()));
     });

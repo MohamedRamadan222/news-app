@@ -24,8 +24,8 @@ class SearchScreen extends StatelessWidget {
                     controller: searchController,
                     type: TextInputType.text,
                     onChange: (value){
+                      print("Test error $value");
                       NewsCubit.get(context).getSearch(value);
-
                     },
                     validator:(String value)
                     {
@@ -38,7 +38,7 @@ class SearchScreen extends StatelessWidget {
                     prefix: Icons.search,
                   ),
                 ),
-                Expanded(child: articaleBuilder(list,)),
+                Expanded(child: articaleBuilder(list,context)),
               ],
             ),
           );

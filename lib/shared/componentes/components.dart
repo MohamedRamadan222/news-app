@@ -21,7 +21,7 @@ Widget defaultFormField({
   bool isPassword = false,
   Function? suffixPressed,
   VoidCallback? onTap,
-  Function? onChange,
+  Function(String value) ? onChange,
   Color colorField = Colors.black54,
   bool isClickable = true,
   required String label,
@@ -33,9 +33,9 @@ Widget defaultFormField({
         keyboardType: type,
         obscureText: isPassword,
         onTap: onTap,
-        // onChanged: (value) =>
-        // onChange!(value)
-        // ,
+        onChanged:
+        onChange
+        ,
         validator: (value) {
           return validate!(value);
         },
@@ -99,15 +99,15 @@ Widget buildArticaleItem(artical) => Padding(
       ),
     );
 
-Widget articaleBuilder(list) => ConditionalBuilder(
+Widget articaleBuilder(list,context) => ConditionalBuilder(
     condition: list.length > 0,
     builder: (context) => ListView.separated(
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) => buildArticaleItem(list[index]),
           separatorBuilder: (context, index) => myDivider(),
-          itemCount: 19,
+          itemCount: list.length,
         ),
-    fallback: (context) => Center(child: CircularProgressIndicator()));
+    fallback: (context) => const Center(child: CircularProgressIndicator()));
 void navigateTo(context, widget){
   Navigator.push(
     context , MaterialPageRoute(builder: (context) => widget,

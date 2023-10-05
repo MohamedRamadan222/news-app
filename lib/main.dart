@@ -124,8 +124,8 @@ class MyApp extends StatelessWidget {
 
             themeMode:
                 AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
-            home: Directionality(
-                child: NewsLayout(), textDirection: TextDirection.rtl),
+            home: const Directionality(
+                textDirection: TextDirection.rtl, child: NewsLayout()),
           );
         },
       ),

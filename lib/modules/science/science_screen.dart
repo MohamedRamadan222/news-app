@@ -15,7 +15,7 @@ class ScienceScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var list = NewsCubit.get(context).science;
-        return articaleBuilder(list);
+        return articaleBuilder(list,context);
       },
 
     );}
